@@ -46,10 +46,10 @@ angular
     convertLbToKg: convertLbToKg,
   };
 })
-.factory('$convert', function($dimensionConvert, $weightConvert) {
+.factory('$unitConvert', function($dimensionConvert, $weightConvert) {
 
   function parseDimension(enrichedObject, source, property) {
-    Object.defineProperties(enrichedObject[property], {
+    Object.defineProperties(enrichedObject, {
       'cm': {
         get: function () {
           return formatResult(source[property], 3);
@@ -72,7 +72,7 @@ angular
   }
 
   function parseWeight(enrichedObject, source, property) {
-    Object.defineProperties(enrichedObject[property], {
+    Object.defineProperties(enrichedObject, {
       'kg': {
         get: function () {
           return formatResult(source[property], 3);
@@ -96,7 +96,7 @@ angular
 
   function getDigits(newValue, multiplier) {
     var digits = parseInput(newValue);
-    digits = parseFloat((digits / multiplier).toFixed(6));
+    digits = parseFloat((digits / multiplier).toFixed(3));
     return digits;
   }
 
