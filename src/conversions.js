@@ -96,7 +96,7 @@ angular
 
   function getDigits(newValue, multiplier) {
     var digits = parseInput(newValue);
-    digits = parseFloat((digits / multiplier).toFixed(3));
+    digits = parseFloat((digits / multiplier).toFixed(6));
     return digits;
   }
 
