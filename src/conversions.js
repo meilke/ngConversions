@@ -49,72 +49,57 @@ angular
 .factory('$unitConvert', function($dimensionConvert, $weightConvert) {
 
   function parseDimension(enrichedObject, source, property) {
+    var maxPrecision = 3;
     Object.defineProperties(enrichedObject, {
       'cm': {
         get: function () {
-          return formatResult(source[property], 3);
+          return formatResult(source[property], maxPrecision);
         },
         set: function (newValue) {
-          var digits = getDigits(newValue, 1);
-          source[property] = digits;
+          source[property] = parseInput(newValue, 1, maxPrecision);
         }
       },
       'inch': {
         get: function () {
-          return formatResult($dimensionConvert.convertCmToInch(source[property]), 3);
+          return formatResult($dimensionConvert.convertCmToInch(source[property]), maxPrecision);
         },
         set: function (newValue) {
-          var digits = getDigits(newValue, $dimensionConvert.CM_TO_INCH_CONVERSION);
-          source[property] = digits;
+          source[property] = parseInput(newValue, $dimensionConvert.CM_TO_INCH_CONVERSION, maxPrecision);
         }
       }
     });
   }
 
   function parseWeight(enrichedObject, source, property) {
+    var maxPrecision = 3;
     Object.defineProperties(enrichedObject, {
       'kg': {
         get: function () {
-          return formatResult(source[property], 3);
+          return formatResult(source[property], maxPrecision);
         },
         set: function (newValue) {
-         var digits = getDigits(newValue, 1);
-         source[property] = digits;
+         source[property] = parseInput(newValue, 1, maxPrecision);
        }
      },
      'lb': {
         get: function () {
-          return formatResult($weightConvert.convertKgToLb(source[property]), 3);
+          return formatResult($weightConvert.convertKgToLb(source[property]), maxPrecision);
         },
         set: function (newValue) {
-          var digits = getDigits(newValue, $weightConvert.KG_TO_LB_CONVERSION);
-          source[property] = digits;
+          source[property] = parseInput(newValue, $weightConvert.KG_TO_LB_CONVERSION, maxPrecision);
         }
       }
     });
   }
 
-  function getDigits(newValue, multiplier) {
-    var digits = parseInput(newValue);
-    digits = parseFloat((digits / multiplier).toFixed(6));
-    return digits;
-  }
-
-  function parseInput(newValue) {
-    var digits = ('' + newValue).replace(',', '.').replace(/[^0-9.]/g,'');
-    if(digits) {
-      digits = parseFloat(digits);
-      return digits;
-    }
-    return 0;
+  function parseInput(newValue, multiplier, maxPrecision) {
+    var result = Number(newValue.toString().match("^\\d+(?:\\.\\d{0," + (maxPrecision) + "})?"))
+    result = parseFloat((result / multiplier).toFixed(6));
+    return result;
   }
 
   function formatResult(result, maxPrecision) {
-    var str = parseFloat((result || 0).toFixed(maxPrecision)).toString();
-    if(str.split('.')[1])
-      result = result.toFixed(str.split('.')[1].length > maxPrecision ? maxPrecision : str.split('.')[1].length );
-    else result = (result || 0).toFixed(1);
-    return result;
+    return parseFloat((result).toFixed(maxPrecision));
   }
 
   return {
