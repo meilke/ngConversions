@@ -6,20 +6,27 @@ describe('Unit conversions', function () {
   beforeEach(function () {
 
     originalDimensions = {
-      height: 50
+      height: 50,
+	  depth: 70
     };
 
     originalWeight = {
       weight: 30
     };
+	
+	function originalDimensionsFunc() {
+	  return originalDimensions;
+	}	
 
     adjustedHeight = { };
+    adjustedDepth = { };
     adjustedWeight = { };
 
     inject(function ($unitConvert) {
       unitConvert = $unitConvert;
       unitConvert.weight(adjustedWeight, originalWeight, 'weight');
-      unitConvert.dimension(adjustedHeight, originalDimensions, 'height');
+      unitConvert.dimension(adjustedHeight, originalDimensions, 'height');	  
+      unitConvert.dimension(adjustedDepth, originalDimensionsFunc, 'depth');
     });
 
   });
@@ -36,6 +43,12 @@ describe('Unit conversions', function () {
     adjustedHeight.cm = 100;
     assert.equal(originalDimensions.height, 100);
     assert.closeTo(parseFloat(adjustedHeight.inch), 39.37, 0.1);
+  });
+  
+  it('should adjust depth when source is function', function () {
+    adjustedDepth.cm = 100;
+    assert.equal(originalDimensions.depth, 100);
+    assert.closeTo(parseFloat(adjustedDepth.inch), 39.37, 0.1);
   });
 
   it('should adjust height in inches', function () {
