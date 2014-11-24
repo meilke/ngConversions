@@ -60,8 +60,9 @@ angular
     else source[property] = value;
   }
 
-  function parseDimension(enrichedObject, source, property) {
-    var maxPrecision = 3;
+  function parseDimension(enrichedObject, source, property, maxPrecision) {
+    if(!maxPrecision && maxPrecision !== 0)
+      maxPrecision = 3;
     Object.defineProperties(enrichedObject, {
       'cm': {
         get: function () {
@@ -84,8 +85,9 @@ angular
     });
   }
 
-  function parseWeight(enrichedObject, source, property) {
-    var maxPrecision = 3;
+  function parseWeight(enrichedObject, source, property, maxPrecision) {
+    if(!maxPrecision && maxPrecision !== 0)
+      maxPrecision = 3;
     Object.defineProperties(enrichedObject, {
       'kg': {
         get: function () {
@@ -110,7 +112,7 @@ angular
 
   function parseInput(newValue, multiplier, maxPrecision) {
     var result = Number(newValue.toString().match("^\\d+(?:\\.\\d{0," + (maxPrecision) + "})?"))
-    result = parseFloat((result / multiplier).toFixed(6));
+    result = parseFloat((result / multiplier).toFixed(maxPrecision + 1));
     return result;
   }
 
