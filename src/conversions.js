@@ -117,7 +117,7 @@ angular
   }
 
   function formatResult(result, maxPrecision) {
-    return parseFloat((result).toFixed(maxPrecision));
+    return parseFloat((result || 0).toFixed(maxPrecision));
   }
 
   return {
