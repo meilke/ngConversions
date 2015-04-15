@@ -1,21 +1,15 @@
 module.exports = function (grunt) {
-
-  // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
-
-  // Define the configuration for all the tasks
   grunt.initConfig({
-
-    // Test settings
     karma: {
       options: {
         preprocessors: {
           'src/**/*.js': 'coverage'
         },
         reporters: ['coverage', 'progress'],
-        coverageReporter: { 
+        coverageReporter: {
           reporters: [
-            {type: 'html', dir:'coverage/', file : 'index.html'},
+            {type: 'html', dir: 'coverage/', file : 'index.html'},
             {type: 'text-summary'}
           ]
         }
@@ -24,10 +18,36 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+    jslint: {
+      code: {
+        src: ['src/**/*.js', 'tests/**/*.js', 'Gruntfile.js'],
+        directives: {
+          sloppy: true,
+          quotmark : 'single',
+          node: true,
+          browser: true,
+          indent: 2,
+          vars: true,
+          unused: true,
+          nomen: true,
+          predef: [
+            'angular',
+            'it',
+            'module',
+            'inject',
+            'assert',
+            'describe',
+            'beforeEach',
+            'afterEach'
+          ]
+        }
+      }
     }
   });
 
   grunt.registerTask('default', [
+    'jslint',
     'karma'
   ]);
 };

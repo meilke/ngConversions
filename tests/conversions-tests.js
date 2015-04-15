@@ -1,22 +1,22 @@
 describe('Unit conversions', function () {
 
-  var unitConvert, adjustedDimensions, adjustedWeight, originalDimensions, originalWeight;
+  var unitConvert, adjustedHeight, adjustedDepth, adjustedWeight, originalDimensions, originalWeight;
 
   beforeEach(module('ngConversions'));
   beforeEach(function () {
 
     originalDimensions = {
       height: 50,
-	  depth: 70
+      depth: 70
     };
 
     originalWeight = {
       weight: 30
     };
-	
-	function originalDimensionsFunc() {
-	  return originalDimensions;
-	}	
+
+    function originalDimensionsFunc() {
+      return originalDimensions;
+    }
 
     adjustedHeight = { };
     adjustedDepth = { };
@@ -25,7 +25,7 @@ describe('Unit conversions', function () {
     inject(function ($unitConvert) {
       unitConvert = $unitConvert;
       unitConvert.weight(adjustedWeight, originalWeight, 'weight');
-      unitConvert.dimension(adjustedHeight, originalDimensions, 'height');	  
+      unitConvert.dimension(adjustedHeight, originalDimensions, 'height');
       unitConvert.dimension(adjustedDepth, originalDimensionsFunc, 'depth');
     });
 
@@ -44,7 +44,7 @@ describe('Unit conversions', function () {
     assert.equal(originalDimensions.height, 100);
     assert.closeTo(parseFloat(adjustedHeight.inch), 39.37, 0.1);
   });
-  
+
   it('should adjust depth when source is function', function () {
     adjustedDepth.cm = 100;
     assert.equal(originalDimensions.depth, 100);
